@@ -1,6 +1,6 @@
-import { Image, StyleSheet, Text, View } from "react-native";
 import Colors from "@/constants/Colors";
 import { Product } from "@/types";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export const defaultimage =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png";
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     aspectRatio: 1,
+    resizeMode: "contain",
     // height: 100,
-    // resizeMode: "contain",
   },
 });

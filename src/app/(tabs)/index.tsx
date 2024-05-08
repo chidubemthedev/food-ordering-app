@@ -1,6 +1,6 @@
 import ProductListItem from "@/components/ProductListItem";
 import { StyleSheet, View } from "react-native";
-import Products from "../../../assets/data/products";
+import Products from "@assets/data/products";
 
 export default function MenuScreen() {
   return (

@@ -56,7 +56,10 @@ const CartProvider = ({ children }: Props) => {
         items: items,
         onAddItem: onAddItem,
         onUpdateQuantity: onUpdateQuantity,
-        total: items.reduce((total, item) => total + item.product.price, 0),
+        total: items.reduce(
+          (total, item) => total + item.product.price * item.quantity,
+          0
+        ),
       }}
     >
       {children}

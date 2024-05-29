@@ -10,7 +10,7 @@ type CartType = {
   items: CartItem[];
   onAddItem: (product: Product, size: CartItem["size"]) => void;
   onUpdateQuantity: (itemId: String, amount: -1 | 1) => void;
-  onRemoveItem: (item: CartItem) => void;
+  total: number;
 };
 
 const CartContext = createContext<CartType>({} as CartType);
@@ -56,7 +56,7 @@ const CartProvider = ({ children }: Props) => {
         items: items,
         onAddItem: onAddItem,
         onUpdateQuantity: onUpdateQuantity,
-        onRemoveItem: () => {},
+        total: items.reduce((total, item) => total + item.product.price, 0),
       }}
     >
       {children}

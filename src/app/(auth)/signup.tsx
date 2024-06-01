@@ -35,7 +35,7 @@ const SignUpScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Stack.Screen options={{ title: "Sign Up" }} /> */}
+      <Stack.Screen options={{ title: "Sign Up" }} />
 
       <Text style={styles.label}>Email</Text>
       <TextInput

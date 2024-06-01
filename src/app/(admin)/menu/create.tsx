@@ -1,6 +1,14 @@
-import { View, Text, StyleSheet, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  Pressable,
+  Alert,
+} from "react-native";
 import React, { useState } from "react";
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import Button from "@/components/Button";
 import { defaultimage } from "@/components/ProductListItem";
 import Colors from "@/constants/Colors";
@@ -11,6 +19,9 @@ const CreateProductScreen = () => {
   const [price, setPrice] = useState("");
   const [errors, setErrors] = useState("");
   const [image, setImage] = useState<string | null>(null);
+
+  const { id } = useLocalSearchParams();
+  const isUpdating = !!id;
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -25,6 +36,26 @@ const CreateProductScreen = () => {
       setImage(result.assets[0].uri);
     }
   };
+
+  const onSubmit = () => {
+    if (isUpdating) {
+      onUpdate();
+    } else {
+      onCreate();
+    }
+  };
+
+  const onUpdate = () => {
+    onValidate();
+    if (errors.length > 0) {
+      console.log("Errors", errors);
+      return;
+    }
+    console.log("Update product", name, price);
+    setName("");
+    setPrice("");
+  };
+
   const onCreate = () => {
     onValidate();
     if (errors.length > 0) {
@@ -34,6 +65,30 @@ const CreateProductScreen = () => {
     console.log("Create product", name, price);
     setName("");
     setPrice("");
+  };
+
+  const onDelete = () => {
+    console.log("Delete product", name, price);
+  };
+
+  const onConfirmDelete = () => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this product?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => onDelete(),
+          style: "destructive",
+        },
+      ]
+    );
+    console.log("open modal");
   };
 
   const onValidate = () => {
@@ -54,7 +109,9 @@ const CreateProductScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Create Product" }} />
+      <Stack.Screen
+        options={{ title: isUpdating ? "Update Product" : "Create Product" }}
+      />
 
       <Image source={{ uri: image || defaultimage }} style={styles.image} />
       <Text onPress={pickImage} style={styles.selectImage}>
@@ -80,7 +137,12 @@ const CreateProductScreen = () => {
 
       {errors.length > 0 && <Text style={{ color: "red" }}>{errors}</Text>}
 
-      <Button onPress={onCreate} text="Create" />
+      <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
+      {isUpdating && (
+        <Pressable onPress={onConfirmDelete} style={styles.pressable}>
+          <Text style={styles.pressableText}>Delete</Text>
+        </Pressable>
+      )}
     </View>
   );
 };
@@ -118,5 +180,17 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     fontWeight: "bold",
     color: Colors.light.tint,
+  },
+  pressable: {
+    backgroundColor: "white",
+    padding: 15,
+    alignItems: "center",
+    borderRadius: 100,
+    marginVertical: 10,
+  },
+  pressableText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "black",
   },
 });

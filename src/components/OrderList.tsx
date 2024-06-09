@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     gap: 10,
     alignItems: "center",
     marginVertical: 10,
+    marginRight: 10,
   },
   quantity: {
     fontWeight: "500",

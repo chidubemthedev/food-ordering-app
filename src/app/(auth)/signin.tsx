@@ -52,6 +52,7 @@ const SignInScreen = () => {
         keyboardType="visible-password"
         value={password}
         onChangeText={setPassword}
+        secureTextEntry={true}
       />
 
       {errors.length > 0 && <Text style={{ color: "red" }}>{errors}</Text>}
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   pressableText: {
+    width: "100%",
     backgroundColor: "white",
     padding: 15,
     alignItems: "center",

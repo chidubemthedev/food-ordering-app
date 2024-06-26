@@ -6,21 +6,28 @@ import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "./lib/supabase";
 
 const index = () => {
-  const { session, loading } = useAuth();
+  const { session, loading, isAdmin } = useAuth();
+
+  console.log(isAdmin);
 
   if (loading) {
-    return <ActivityIndicator />;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
+        <ActivityIndicator />
+      </View>
+    );
   }
 
   if (!session) {
     return <Redirect href={"/(auth)/signin"} />;
   }
 
+  if (!isAdmin) {
+    return <Redirect href={"/(user)/menu"} />;
+  }
+
   return (
     <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
-      {/* <Link href={"/(auth)/signin"} asChild>
-        <Button text="Get Started" />
-      </Link> */}
       <Link href={"/(admin)/menu"} asChild>
         <Button text="Admin" />
       </Link>

@@ -1,30 +1,38 @@
 import { supabase } from "@/app/lib/supabase";
 import ProductListItem from "@/components/ProductListItem";
-import Products from "@assets/data/products";
-import { useEffect } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { ActivityIndicator, FlatList, StyleSheet, Text } from "react-native";
 
 export default function MenuScreen() {
-  useEffect(() => {
-    const fetchProducts = async () => {
+  const {
+    data: products,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
         .select("*")
         .order("name", { ascending: true });
       if (error) {
-        console.log("error", error);
+        throw new Error(error.message);
       }
-      if (data) {
-        console.log(data);
-      }
-    };
+      return data;
+    },
+  });
 
-    fetchProducts();
-  }, []);
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return <Text>Failed to get products.</Text>;
+  }
 
   return (
     <FlatList
-      data={Products}
+      data={products}
       numColumns={2}
       contentContainerStyle={styles.container}
       columnWrapperStyle={{ gap: 10 }}

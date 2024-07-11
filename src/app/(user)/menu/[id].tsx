@@ -24,11 +24,19 @@ const ProductDetailsScreen = () => {
   const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
 
   if (isLoading) {
-    return <ActivityIndicator />;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
+        <ActivityIndicator />
+      </View>
+    );
   }
 
   if (!product || error) {
-    return <Text>Product not found</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
+        <Text>Product not found!</Text>
+      </View>
+    );
   }
 
   const addToCart = () => {

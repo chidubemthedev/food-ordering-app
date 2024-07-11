@@ -1,16 +1,25 @@
 import { useProductList } from "@/api/products";
 import ProductListItem from "@/components/ProductListItem";
+import { View } from "react-native";
 import { ActivityIndicator, FlatList, StyleSheet, Text } from "react-native";
 
 export default function MenuScreen() {
   const { data: products, error, isLoading } = useProductList();
 
   if (isLoading) {
-    return <ActivityIndicator />;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
+        <ActivityIndicator />
+      </View>
+    );
   }
 
   if (error) {
-    return <Text>Failed to get products.</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
+        <Text>Failed to get Products.</Text>
+      </View>
+    );
   }
 
   return (
